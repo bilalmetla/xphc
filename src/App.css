@@ -1,0 +1,76 @@
+/* src/App.css */
+.App {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+}
+
+textarea, input {
+  width: 100%;
+  margin: 10px 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+label {
+  font-weight: bold;
+}
+
+.invoice-form {
+  background-color: #f8f9fa;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+  margin-bottom: 20px;
+}
+.item-details-section {
+  margin-bottom: 20px;
+  padding-left: 40px;
+  padding-right: 20px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.invoice-form-container {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto; /* Centers horizontally and adds margin */
+  padding: 20px; /* Adds padding around the form */
+  max-width: 800px; /* Optional: Limits the width of the form */
+}
+
+
+.download-link {
+  font-size: 24px;
+  text-decoration: none;
+  color: #333;
+  padding: 10px 20px;
+  border: 2px solid #333;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  margin-left: 42%;
+  margin-bottom: 10px;
+}
+
+.download-link:hover {
+  background-color: #333;
+  color: #fff;
+}
