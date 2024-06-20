@@ -20,11 +20,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-versions }}
 
-      - name: Install dependencies
-        run: npm install
+      # - name: Install dependencies
+      #   run: npm install
 
-      - name: Build the React app
-        run: npm run build
+      # - name: Build the React app
+      #   run: npm run build
 
       - name: Configure AWS CLI
         run: |
@@ -33,14 +33,21 @@ jobs:
           aws --version
 
       - name: Create S3 bucket if it doesn't exist
+        id: create_s3_bucket
         run: |
-          aws s3api head-bucket --bucket xphc || aws s3 mb s3://xphc --region us-east-1
+          if aws s3api head-bucket --bucket xphc 2>&1 | grep 'Not Found'; then
+            aws s3 mb s3://xphc --region us-east-1
+            echo "bucket_created=true" >> $GITHUB_ENV
+          else
+            echo "bucket_created=false" >> $GITHUB_ENV
+          fi
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-east-1
 
       - name: Apply public read bucket policy
+        if: env.bucket_created == 'true' || success()
         run: |
           aws s3api put-bucket-policy --bucket xphc --policy '{
             "Version": "2012-10-17",
