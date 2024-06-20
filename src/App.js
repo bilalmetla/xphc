@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import DownloadInvoice from './components/DownloadInvoice';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 import BookingForm from './components/BookingForm';
 
 import './App.css';  // Import App.css here
