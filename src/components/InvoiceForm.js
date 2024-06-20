@@ -39,7 +39,7 @@ const InvoiceForm = ({
     } else {
       setInvoiceNumber(0);
     }
-  }, []);
+  }, [setInvoiceNumber]);
 
   // Handle clearing the form
   const handleClearForm = () => {
