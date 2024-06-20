@@ -17,7 +17,7 @@ function DownloadInvoice() {
   const [items, setItems] = useState([]);
   const [bankDetails, setBankDetails] = useState('');
 
-  const [currentView, setCurrentView] = useState('invoice'); // State to manage current view
+
 
   return (
    
