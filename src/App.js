@@ -1,67 +1,29 @@
-// src/App.js
 import React, { useState } from 'react';
-import InvoiceForm from './components/InvoiceForm';
-import InvoicePDF from './components/InvoicePDF';
+
+import DownloadInvoice from './components/DownloadInvoice';
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import BookingForm from './components/BookingForm';
 
 import './App.css';  // Import App.css here
 
 
-const predefinedItems = [
-  { label: 'Service A', value: 'Service A', price: 100 },
-  { label: 'Service B', value: 'Service B', price: 200 },
-  { label: 'Service C', value: 'Service C', price: 300 },
-];
 
 function App() {
-  const [invoiceDate, setInvoiceDate] = useState('');
-  const [invoiceNumber, setInvoiceNumber] = useState('');
-  const [recipientAddress, setRecipientAddress] = useState('');
-  const [address, setAddress] = useState('');
-  const [items, setItems] = useState([]);
-  const [bankDetails, setBankDetails] = useState('');
+  
 
-
+  const [currentView, setCurrentView] = useState('booking'); // State to manage current view
 
   return (
     <div className="App">
-      <h1>Invoice Generator</h1>
-      <InvoiceForm
-        invoiceDate={invoiceDate}
-        setInvoiceDate={setInvoiceDate}
-        invoiceNumber={invoiceNumber}
-        setInvoiceNumber={setInvoiceNumber}
-        recipientAddress={recipientAddress}
-        setRecipientAddress={setRecipientAddress}
-        address={address}
-        setAddress={setAddress}
-        items={items}
-        setItems={setItems}
-        predefinedItems={predefinedItems}
-        bankDetails={bankDetails}
-        setBankDetails={setBankDetails}
-        // clearForm={clearForm}
-      />
-      <PDFDownloadLink
-        document={<InvoicePDF
-          invoiceDate={invoiceDate}
-          invoiceNumber={invoiceNumber}
-          recipientAddress={recipientAddress}
-          address={address}
-          items={items}
-          bankDetails={bankDetails}
-        />}
-        fileName={`${invoiceNumber}_invoice.pdf`}
-        onClick={() => {
-           // Update invoice number in localStorage and state
-          localStorage.setItem('invoiceNumber', parseInt(invoiceNumber));
-          
-        }}
-        className="download-link"
-      >
-        {({ loading }) => (loading ? 'Loading document...' : 'Download PDF')}
-        
-      </PDFDownloadLink>
+      <h1>XP House Cleaning Service</h1>
+      <nav>
+        <ul>
+          <li><button onClick={() => setCurrentView('invoice')}>Invoice Generator</button></li>
+          <li><button onClick={() => setCurrentView('booking')}>Booking Form</button></li>
+        </ul>
+      </nav>
+      {currentView === 'invoice' &&  <DownloadInvoice /> }
+      {currentView === 'booking' && <BookingForm />}
     </div>
   );
 }
