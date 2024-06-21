@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './BookingForm.css';  // Import your CSS file here
 
 const BookingForm = () => {
   const [bookings, setBookings] = useState([]);
@@ -15,15 +16,25 @@ const BookingForm = () => {
 
   useEffect(() => {
     const storedBookings = JSON.parse(localStorage.getItem('bookings')) || [];
-    if(storedBookings.length > 0) {
-        setBookings(storedBookings);
+    if (storedBookings.length > 0) {
+      storedBookings.sort((a, b) => {
+        if (a.status === 'booked' && b.status !== 'booked') return -1;
+        if (a.status !== 'booked' && b.status === 'booked') return 1;
+        return new Date(a.date) - new Date(b.date);
+      })
+      setBookings(storedBookings);
     }
-    
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('bookings', JSON.stringify(bookings));
-  }, [bookings]);
+  const saveBookings = (updatedBookings) => {
+    const sortedBookings = updatedBookings.sort((a, b) => {
+      if (a.status === 'booked' && b.status !== 'booked') return -1;
+      if (a.status !== 'booked' && b.status === 'booked') return 1;
+      return new Date(a.date) - new Date(b.date);
+    });
+    setBookings(sortedBookings);
+    localStorage.setItem('bookings', JSON.stringify(sortedBookings));
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,15 +42,15 @@ const BookingForm = () => {
   };
 
   const handleAddBooking = () => {
+    let updatedBookings;
     if (isEditing) {
-      const updatedBookings = bookings.map((booking, index) => 
+      updatedBookings = bookings.map((booking, index) => 
         index === editingIndex ? currentBooking : booking
       );
-      setBookings(updatedBookings);
       setIsEditing(false);
       setEditingIndex(null);
     } else {
-      setBookings([...bookings, currentBooking]);
+      updatedBookings = [...bookings, currentBooking];
     }
 
     setCurrentBooking({
@@ -49,8 +60,8 @@ const BookingForm = () => {
       price: '',
       status: 'booked',
     });
-   
-    
+
+    saveBookings(updatedBookings);
   };
 
   const handleEditBooking = (index) => {
@@ -61,7 +72,7 @@ const BookingForm = () => {
 
   const handleRemoveBooking = (index) => {
     const updatedBookings = bookings.filter((_, i) => i !== index);
-    setBookings(updatedBookings);
+    saveBookings(updatedBookings);
   };
 
   const handleCheckboxChange = (index) => {
@@ -74,11 +85,24 @@ const BookingForm = () => {
 
   const handleBulkRemove = () => {
     const updatedBookings = bookings.filter((_, index) => !selectedBookings.includes(index));
-    setBookings(updatedBookings);
     setSelectedBookings([]);
+    saveBookings(updatedBookings);
   };
 
-  const sortedBookings = [...bookings].sort((a, b) => new Date(a.date) - new Date(b.date));
+  const getRowClass = (date, status) => {
+    const today = new Date();
+    const bookingDate = new Date(date);
+    const nextDay = new Date(today);
+    nextDay.setDate(today.getDate() + 1);
+
+    if (bookingDate.toDateString() === today.toDateString()) {
+      return 'today';
+    } else if (bookingDate.toDateString() === nextDay.toDateString()) {
+      return 'next-day';
+    } else {
+      return status;
+    }
+  };
 
   return (
     <div>
@@ -155,8 +179,8 @@ const BookingForm = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedBookings.map((booking, index) => (
-            <tr key={index}>
+          {bookings.map((booking, index) => (
+            <tr key={index} className={getRowClass(booking.date, booking.status)}>
               <td>
                 <input
                   type="checkbox"
