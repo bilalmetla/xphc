@@ -82,7 +82,7 @@ const UserJobs = () => {
 
   return (
     <div>
-      <h2>Your Assigned Jobs</h2>
+      <h2>{ username} Assigned Jobs</h2>
       <table>
         <thead>
           <tr key="heading">
