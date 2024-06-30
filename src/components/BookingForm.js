@@ -1,5 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { dynamoDB } from '../awsConfig';
 import './BookingForm.css';  // Import your CSS file here
+
+const teamMembers = [
+  'arshdeep',
+  'preeti',
+  'ajit',
+  'jagjeet',
+  'humera',
+  'ashraf',
+  'suman',
+  'khalid'
+];
 
 const BookingForm = () => {
   const [bookings, setBookings] = useState([]);
@@ -9,31 +22,49 @@ const BookingForm = () => {
     mobile: '',
     price: '',
     status: 'booked',
+    assignees: [],
+    jobDetails:''
   });
   const [isEditing, setIsEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
   const [selectedBookings, setSelectedBookings] = useState([]);
 
   useEffect(() => {
-    const storedBookings = JSON.parse(localStorage.getItem('bookings')) || [];
-    if (storedBookings.length > 0) {
-      storedBookings.sort((a, b) => {
-        if (a.status === 'booked' && b.status !== 'booked') return -1;
-        if (a.status !== 'booked' && b.status === 'booked') return 1;
-        return new Date(a.date) - new Date(b.date);
-      })
-      setBookings(storedBookings);
-    }
+    const fetchBookings = async () => {
+      try {
+        const result = await dynamoDB.scan({ TableName: 'BookingsTable' }).promise();
+        const sortedBookings = result.Items.sort((a, b) => {
+          if (a.status === 'booked' && b.status !== 'booked') return -1;
+          if (a.status !== 'booked' && b.status === 'booked') return 1;
+          return new Date(a.date) - new Date(b.date);
+        });
+        setBookings(sortedBookings);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+
+    fetchBookings();
   }, []);
 
-  const saveBookings = (updatedBookings) => {
+  const saveBookings = async (updatedBookings) => {
     const sortedBookings = updatedBookings.sort((a, b) => {
       if (a.status === 'booked' && b.status !== 'booked') return -1;
       if (a.status !== 'booked' && b.status === 'booked') return 1;
       return new Date(a.date) - new Date(b.date);
     });
     setBookings(sortedBookings);
-    localStorage.setItem('bookings', JSON.stringify(sortedBookings));
+
+    for (const booking of sortedBookings) {
+      try {
+        await dynamoDB.put({
+          TableName: 'BookingsTable',
+          Item: booking,
+        }).promise();
+      } catch (error) {
+        console.error("Error saving booking:", error);
+      }
+    }
   };
 
   const handleInputChange = (e) => {
@@ -41,7 +72,16 @@ const BookingForm = () => {
     setCurrentBooking({ ...currentBooking, [name]: value });
   };
 
-  const handleAddBooking = () => {
+  const handleAssigneeChange = (e) => {
+    const { value, checked } = e.target;
+    const newAssignees = checked
+      ? [...currentBooking.assignees, value]
+      : currentBooking.assignees.filter(assignee => assignee !== value);
+
+    setCurrentBooking({ ...currentBooking, assignees: newAssignees });
+  };
+
+  const handleAddBooking = async () => {
     let updatedBookings;
     if (isEditing) {
       updatedBookings = bookings.map((booking, index) => 
@@ -50,7 +90,17 @@ const BookingForm = () => {
       setIsEditing(false);
       setEditingIndex(null);
     } else {
-      updatedBookings = [...bookings, currentBooking];
+      const newBooking = { ...currentBooking, id: uuidv4() };
+      updatedBookings = [...bookings, newBooking];
+
+      try {
+        await dynamoDB.put({
+          TableName: 'BookingsTable',
+          Item: newBooking,
+        }).promise();
+      } catch (error) {
+        console.error("Error adding booking:", error);
+      }
     }
 
     setCurrentBooking({
@@ -59,6 +109,8 @@ const BookingForm = () => {
       mobile: '',
       price: '',
       status: 'booked',
+      assignees: [],
+      jobDetails:''
     });
 
     saveBookings(updatedBookings);
@@ -70,9 +122,20 @@ const BookingForm = () => {
     setEditingIndex(index);
   };
 
-  const handleRemoveBooking = (index) => {
+  const handleRemoveBooking = async (index) => {
+    const bookingToRemove = bookings[index];
+
     const updatedBookings = bookings.filter((_, i) => i !== index);
     saveBookings(updatedBookings);
+
+    try {
+      await dynamoDB.delete({
+        TableName: 'BookingsTable',
+        Key: { id: bookingToRemove.id },
+      }).promise();
+    } catch (error) {
+      console.error("Error removing booking:", error);
+    }
   };
 
   const handleCheckboxChange = (index) => {
@@ -83,8 +146,23 @@ const BookingForm = () => {
     }
   };
 
-  const handleBulkRemove = () => {
+  const handleBulkRemove = async () => {
     const updatedBookings = bookings.filter((_, index) => !selectedBookings.includes(index));
+
+    const promises = selectedBookings.map(index => {
+      const bookingToRemove = bookings[index];
+      return dynamoDB.delete({
+        TableName: 'BookingsTable',
+        Key: { id: bookingToRemove.id },
+      }).promise();
+    });
+
+    try {
+      await Promise.all(promises);
+    } catch (error) {
+      console.error("Error removing bookings:", error);
+    }
+
     setSelectedBookings([]);
     saveBookings(updatedBookings);
   };
@@ -153,10 +231,34 @@ const BookingForm = () => {
           >
             <option value="pending">Pending</option>
             <option value="booked">Booked</option>
+            <option value="payment pending">Payment Pending</option>
             <option value="completed">Completed</option>
             <option value="canceled">Canceled</option>
           </select>
         </label>
+        <label>
+          Job Details:
+          <textarea
+            rows="8"
+            name="jobDetails"
+            value={currentBooking.jobDetails}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label>Assignees:</label>
+        <div className="assignees">
+          {teamMembers.map((member) => (
+            <label key={member}>
+              <input
+                type="checkbox"
+                value={member}
+                checked={currentBooking.assignees.includes(member)}
+                onChange={handleAssigneeChange}
+              />
+              {member}
+            </label>
+          ))}
+        </div>
         <button onClick={handleAddBooking}>
           {isEditing ? 'Update Booking' : 'Add Booking'}
         </button>
@@ -171,10 +273,13 @@ const BookingForm = () => {
           <tr>
             <th></th>
             <th>Description</th>
+            
             <th>Date</th>
             <th>Mobile</th>
             <th>Price</th>
             <th>Status</th>
+            <th>Assignees</th>
+            <th>jobDetails</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -193,6 +298,8 @@ const BookingForm = () => {
               <td>{booking.mobile}</td>
               <td>{booking.price}</td>
               <td>{booking.status}</td>
+              <td>{booking.assignees ? booking.assignees.join(', ') : ''}</td>
+              <td>{booking.jobDetails}</td>
               <td>
                 <button onClick={() => handleEditBooking(index)}>Edit</button>
                 <button onClick={() => handleRemoveBooking(index)}>Remove</button>

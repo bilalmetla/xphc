@@ -5,23 +5,23 @@
   }
   
   .booked {
-    background-color: #c3e6cb;
+    background-color: #1bd145;
   }
   
   .completed {
-    background-color: #d4edda;
+    background-color: #caddcf;
   }
   
   .canceled {
-    background-color: #f8d7da;
+    background-color: #df8a91;
   }
   
   .today {
-    background-color: #cce5ff;
+    background-color: #166dca;
   }
   
   .next-day {
-    background-color: #e2e3e5;
+    background-color: #9db0d6;
   }
   
   .booking-form {
