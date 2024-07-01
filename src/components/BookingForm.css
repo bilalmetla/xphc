@@ -47,3 +47,26 @@
     margin: 5px;
   }
   
+  .assignees {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .assignee-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px; /* Adjust space between checkboxes if needed */
+    padding: 5px;
+    border-radius: 4px;
+  }
+  
+  .assignee-label input[type="checkbox"] {
+    margin-right: 8px; /* Adjust space between checkbox and text */
+  }
+  
+  /* Highlight when checkbox is selected */
+  .assignee-label input[type="checkbox"]:checked + span {
+    background-color: #d1e7dd; /* Adjust highlight color */
+    border: 1px solid #0f5132; /* Adjust border color */
+  }
+  

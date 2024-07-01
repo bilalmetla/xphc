@@ -6,8 +6,9 @@ import './BookingForm.css';  // Import your CSS file here
 const teamMembers = [
   'arshdeep',
   'preeti',
-  'ajit',
   'jagjeet',
+  'ajit',
+  'manjur',
   'humera',
   'ashraf',
   'suman',
@@ -245,10 +246,12 @@ const BookingForm = () => {
             onChange={handleInputChange}
           />
         </label>
-        <label>Assignees:</label>
+        <label>Assignees:</label> 
+        <br></br>
+        <br></br>
         <div className="assignees">
           {teamMembers.map((member) => (
-            <label key={member}>
+            <label key={member} className="assignee-label">
               <input
                 type="checkbox"
                 value={member}
@@ -259,6 +262,7 @@ const BookingForm = () => {
             </label>
           ))}
         </div>
+
         <button onClick={handleAddBooking}>
           {isEditing ? 'Update Booking' : 'Add Booking'}
         </button>
