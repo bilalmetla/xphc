@@ -44,7 +44,7 @@ const InvoicePDF = ({ invoiceDate, invoiceNumber, recipientAddress, items, bankD
         <View style={styles.header}>
           <View style={styles.companyInfo}>
             <Text style={{ fontSize:18 }}>XP House Cleaning Service</Text>
-            <Text>HA0 3LT</Text>
+            <Text>Address: 3 Hill Court Hanger Lane, Hanger Lane, London, England, W5 3DF </Text>
             <Text>Email: xphousecleaning@gmail.com</Text>
           </View>
           <View style={styles.invoiceInfoContainer}>
