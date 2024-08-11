@@ -2,6 +2,7 @@
 
 import DownloadInvoice from './components/DownloadInvoice';
 import BookingForm from './components/BookingForm';
+import QuoteForm from './components/QuoteForm';
 import UserJobs from './components/UserJobs';
 
 import './App.css';  // Import App.css here
@@ -135,6 +136,7 @@ const App = () => {
           <ul>
           
             <li><button onClick={() => setCurrentView('invoice')}>Invoice Generator</button></li>
+            <li><button onClick={() => setCurrentView('quote')}>Quote Generator</button></li>
             <li><button onClick={() => setCurrentView('booking')}>Booking Form</button></li>
           
           
@@ -150,6 +152,8 @@ const App = () => {
         currentView === 'invoice' && <DownloadInvoice />}
       {currentUser && currentUser.role === 'admin' &&
         currentView === 'booking' && <BookingForm />}
+      {currentUser && currentUser.role === 'admin' &&
+        currentView === 'quote' && <QuoteForm />}
       {currentUser && currentUser.role === 'admin' &&
         currentView === 'create-user' && 
        <div>

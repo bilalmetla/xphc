@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XP Deep Cleaning Services and Carpet Cleaning</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .hero-section {
+            background: url('hero-background.jpg') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .hero-section h1 {
+            font-size: 3em;
+            margin: 0;
+        }
+
+        .hero-section p {
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        section {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .service, .review {
+            margin: 20px 0;
+        }
+
+        .service img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .service h3 {
+            margin: 10px 0;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        form input, form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #218838;
+        }
+
+        .about-images {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .about-images img {
+            max-width: 30%;
+            height: auto;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Menu -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Home Page -->
+    <section id="home">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1>Welcome to XP Deep Cleaning Services and Carpet Cleaning</h1>
+            <p>Your comfort is our priority</p>
+            <a href="#contact" class="btn">Get a Quote</a>
+        </div>
+
+        <!-- Services Section -->
+        <section id="services">
+            <h2>Our Services</h2>
+            <div class="service">
+                <img src="residential-cleaning.jpg" alt="Residential Cleaning">
+                <h3>Residential Cleaning</h3>
+                <p>We provide top-notch residential cleaning services.</p>
+            </div>
+            <div class="service">
+                <img src="commercial-cleaning.jpg" alt="Commercial Cleaning">
+                <h3>Commercial Cleaning</h3>
+                <p>Professional cleaning services for your business.</p>
+            </div>
+            <div class="service">
+                <img src="carpet-cleaning.jpg" alt="Carpet Cleaning">
+                <h3>Carpet Cleaning</h3>
+                <p>Specialized carpet cleaning to keep your floors pristine.</p>
+            </div>
+            <div class="service">
+                <img src="window-cleaning.jpg" alt="Window Cleaning">
+                <h3>Window Cleaning</h3>
+                <p>Expert window cleaning for a streak-free shine.</p>
+            </div>
+            <div class="service">
+                <img src="deep-cleaning.jpg" alt="Deep Cleaning">
+                <h3>Deep Cleaning</h3>
+                <p>Comprehensive deep cleaning for all areas of your space.</p>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews">
+            <h2>Customer Reviews</h2>
+            <div class="review">
+                <p>"Excellent service! My home has never looked better."</p>
+                <p>- Jane Doe</p>
+            </div>
+            <div class="review">
+                <p>"Highly recommend! Very professional and thorough."</p>
+                <p>- John Smith</p>
+            </div>
+        </section>
+
+        <!-- Footer Section -->
+        <footer>
+            <section id="contact">
+                <h2>Contact Us</h2>
+                <form action="submit_form.php" method="post">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" required></textarea>
+                    <button type="submit">Submit</button>
+                </form>
+            </section>
+            <p>&copy; 2024 XP Deep Cleaning Services and Carpet Cleaning. All rights reserved.</p>
+        </footer>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about">
+        <h2>About Us</h2>
+        <p>We are a dedicated team of cleaning professionals committed to providing exceptional services to our clients. With years of experience and a passion for cleanliness, we ensure that your space is spotless and comfortable.</p>
+        <div class="about-images">
+            <img src="about1.jpg" alt="Cleaning team at work">
+            <img src="about2.jpg" alt="Professional cleaning equipment">
+            <img src="about3.jpg" alt="Our happy clients">
+        </div>
+    </section>
+</body>
+</html>
