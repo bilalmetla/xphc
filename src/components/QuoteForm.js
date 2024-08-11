@@ -193,8 +193,11 @@ const QuoteForm = () => {
               <Text>Quote Date: {new Date().toLocaleDateString('en-GB')}</Text>
               <Text>Valid Until: {new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB')}</Text>
               <Text>Quote Number: {quoteDetails.quoteNumber}</Text>
+              <br></br>
+          
             </View>
 
+            <br></br>
             {/* Quote Items Table */}
             <View style={pdfStyles.table}>
               <View style={[pdfStyles.tableRow, pdfStyles.tableHeader]}>
