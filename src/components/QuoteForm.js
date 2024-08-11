@@ -189,7 +189,7 @@ const QuoteForm = () => {
             <View style={pdfStyles.section}>
                <Text>Client Name: {quoteDetails.clientName}</Text>
               <Text>Client Contact: {quoteDetails.clientContact}</Text>
-              <Text>Client Address: {quoteDetails.clientContact} {quoteDetails.clientAddress}</Text>
+              <Text>Client Address: {quoteDetails.clientAddress}</Text>
               <Text>Quote Date: {new Date().toLocaleDateString('en-GB')}</Text>
               <Text>Valid Until: {new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB')}</Text>
               <Text>Quote Number: {quoteDetails.quoteNumber}</Text>
